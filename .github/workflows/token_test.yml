@@ -56,19 +56,13 @@ jobs:
         run: |
           rm -rf $USER_REPO_PATH || true
           git clone https://$TOKEN@github.com/$REPOSITORY.git $USER_REPO_PATH
-      - name: Git setup
-        if: inputs.mode == 'sisifo'
-        run: |
-          cd $USER_REPO_PATH
-          git config user.name "team-iat"
-          git config user.email "team-iat@inditex.com"
-          git config --global url."https://${TOKEN}@github.com/inditex".insteadOf "https://github.com/inditex"
           
       - name: Checkout USER repo
         if: inputs.mode == 'pat'
         run: |
           rm -rf $USER_REPO_PATH || true
           git clone https://$PAT@github.com/$REPOSITORY.git $USER_REPO_PATH
+          
       - name: Git setup
         if: inputs.mode == 'pat'
         run: |
@@ -93,7 +87,7 @@ jobs:
       - name: Push changes
         run: |
           cd $USER_REPO_PATH
-          git checkout -b ${BRANCH}
+          #git checkout -b ${BRANCH}
           git pull origin ${BRANCH}
           git push origin ${BRANCH}
         
