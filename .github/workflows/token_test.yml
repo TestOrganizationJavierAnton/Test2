@@ -69,7 +69,7 @@ jobs:
           cd $USER_REPO_PATH
           git config user.name "team-iat"
           git config user.email "team-iat@inditex.com"
-          git config --global url."https://${PAT}@github.com/inditex".insteadOf "https://github.com/inditex"
+          git config --global url."https://$PAT@github.com/inditex".insteadOf "https://github.com/inditex"
           
       - name: Create local changes
         run: |
