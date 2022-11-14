@@ -27,7 +27,7 @@ env:
   PROXY_INFRA_FOLDER: 'terraform_templates'
   REPOSITORY: ${{ inputs.repository }}
   BRANCH:  ${{ inputs.branch }}
-  PAT: "" # To be completed
+  PAT:  ${{ inputs.token }}
 
 jobs:
   test_mode:
