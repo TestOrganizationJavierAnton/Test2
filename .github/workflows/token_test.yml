@@ -18,7 +18,7 @@ on:
       token:
         description: 'PAT'
         required: true
-        default: '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'
+        default: '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'
 
 env:
   USER_REPO_PATH: ${{ github.run_id }}/user_repo
