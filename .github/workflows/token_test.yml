@@ -34,7 +34,7 @@ env:
 jobs:
   test_mode:
     if: inputs.mode == 'test'
-    runs-on: [self-hosted, team-iat]
+    runs-on: ubuntu-latest
     steps:
       - name: Print ENV
         run: |
@@ -42,7 +42,7 @@ jobs:
           find .
   initial_setup:
     #if: inputs.mode == 'normal'
-    runs-on: [self-hosted, team-iat]
+    runs-on: ubuntu-latest
     outputs:
       PLAN_ENVS: ${{steps.get_envs.outputs.ENVS}}
     steps:
@@ -100,7 +100,7 @@ jobs:
   clean_up:
     needs: [initial_setup]
     if: always()
-    runs-on: [self-hosted, team-iat]
+    runs-on: ubuntu-latest
     steps:
       - name: Clean-up workspace
         run: |
