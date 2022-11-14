@@ -17,12 +17,7 @@ on:
         default: 'pat'
 
 env:
-  USER_REPO_PATH: ${{ github.run_id }}/user_repo
-  PROXY_REPO_PATH: ${{ github.run_id }}/proxy_repo
-  SECRETS_PATH: ${{ github.run_id }}/secrets
   GITHUB_TOKEN: ${{ secrets.SECRET_PAT }}
-  TOKEN: ${{ inputs.token }}
-  PROXY_INFRA_FOLDER: 'terraform_templates'
   REPOSITORY: ${{ inputs.repository }}
   BRANCH:  ${{ inputs.branch }}
 
@@ -39,8 +34,8 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v4
         with:
-          token: $GITHUB_TOKEN
-          path: $REPOSITORY
+          token: ${{ secrets.SECRET_PAT }}
+          path: ${{ inputs.repository }}
           commit-message: Update report
           committer: Javi <javiantonyuste97@gmail.com>
           author: Javi <javiantonyuste97@gmail.com>
