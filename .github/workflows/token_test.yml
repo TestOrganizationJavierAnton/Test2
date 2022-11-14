@@ -1,0 +1,106 @@
+name: sisifo_bot_test
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+          description: 'Repository'
+          required: true
+          default: 'TestOrganizationJavierAnton/Test'
+      branch:
+        description: 'Branch'
+        required: false
+        default: 'main'
+      mode:
+        description: 'pat, test'
+        required: false
+        default: 'pat'
+      token:
+        description: 'PAT'
+        required: true
+
+env:
+  USER_REPO_PATH: ${{ github.run_id }}/user_repo
+  PROXY_REPO_PATH: ${{ github.run_id }}/proxy_repo
+  SECRETS_PATH: ${{ github.run_id }}/secrets
+  #GITHUB_TOKEN: ${{ secrets.SISIFO_PR_PAT }}
+  TOKEN: ${{ inputs.token }}
+  PROXY_INFRA_FOLDER: 'terraform_templates'
+  REPOSITORY: ${{ inputs.repository }}
+  BRANCH:  ${{ inputs.branch }}
+  PAT: "" # To be completed
+
+jobs:
+  test_mode:
+    if: inputs.mode == 'test'
+    runs-on: [self-hosted, team-iat]
+    steps:
+      - name: Print ENV
+        run: |
+          env
+          find .
+  initial_setup:
+    #if: inputs.mode == 'normal'
+    runs-on: [self-hosted, team-iat]
+    outputs:
+      PLAN_ENVS: ${{steps.get_envs.outputs.ENVS}}
+    steps:
+      - name: Clean-up workspace
+        run: |
+          env
+          rm -rf *
+          
+      - name: Checkout USER repo
+        if: inputs.mode == 'sisifo'
+        run: |
+          rm -rf $USER_REPO_PATH || true
+          git clone https://$TOKEN@github.com/$REPOSITORY.git $USER_REPO_PATH
+      - name: Git setup
+        if: inputs.mode == 'sisifo'
+        run: |
+          cd $USER_REPO_PATH
+          git config user.name "team-iat"
+          git config user.email "team-iat@inditex.com"
+          git config --global url."https://${TOKEN}@github.com/inditex".insteadOf "https://github.com/inditex"
+          
+      - name: Checkout USER repo
+        if: inputs.mode == 'pat'
+        run: |
+          rm -rf $USER_REPO_PATH || true
+          git clone https://$PAT@github.com/$REPOSITORY.git $USER_REPO_PATH
+      - name: Git setup
+        if: inputs.mode == 'pat'
+        run: |
+          cd $USER_REPO_PATH
+          git config user.name "team-iat"
+          git config user.email "team-iat@inditex.com"
+          git config --global url."https://${PAT}@github.com/inditex".insteadOf "https://github.com/inditex"
+          
+      - name: Create local changes
+        run: |
+          cd $USER_REPO_PATH
+          touch test_file.txt
+          echo "Hello, World!" >> test_file.txt
+      - name: Commit files
+        run: |
+          cd $USER_REPO_PATH
+          git add .
+      - name: Commit files
+        run: |
+          cd $USER_REPO_PATH
+          git commit -m "Testing sisifo bot permissions" -a
+      - name: Push changes
+        run: |
+          cd $USER_REPO_PATH
+          git checkout -b ${BRANCH}
+          git pull origin ${BRANCH}
+          git push origin ${BRANCH}
+        
+  clean_up:
+    needs: [initial_setup]
+    if: always()
+    runs-on: [self-hosted, team-iat]
+    steps:
+      - name: Clean-up workspace
+        run: |
+          rm -rf ${{ github.run_id }} || true
