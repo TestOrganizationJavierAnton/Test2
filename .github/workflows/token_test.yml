@@ -56,7 +56,7 @@ jobs:
         if: inputs.mode == 'pat'
         run: |
           rm -rf $USER_REPO_PATH || true
-          git clone https://$GITHUB_TOKEN@github.com/$REPOSITORY.git $USER_REPO_PATH
+          git clone https://JavierAntonYuste:$GITHUB_TOKEN@github.com/$REPOSITORY.git $USER_REPO_PATH
           
       - name: Git setup
         if: inputs.mode == 'pat'
@@ -64,7 +64,7 @@ jobs:
           cd $USER_REPO_PATH
           git config user.name "Javi"
           git config user.email "javiantonyuste97@gmail.com"
-          git config --global url."https://$GITHUB_TOKEN@github.com/TestOrganizationJavierAnton".insteadOf "https://github.com/TestOrganizationJavierAnton"
+          git config --global url."https://JavierAntonYuste:$GITHUB_TOKEN@github.com/TestOrganizationJavierAnton".insteadOf "https://github.com/TestOrganizationJavierAnton"
           
       - name: Create local changes
         run: |
