@@ -39,7 +39,8 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.SECRET_PAT }}
+          token: $GITHUB_TOKEN
+          path: $USER_REPO_PATH
           commit-message: Update report
           committer: Javi <javiantonyuste97@gmail.com>
           author: Javi <javiantonyuste97@gmail.com>
