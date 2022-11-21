@@ -21,7 +21,8 @@ env:
   PROXY_REPO_PATH: ${{ github.run_id }}/proxy_repo
   SECRETS_PATH: ${{ github.run_id }}/secrets
   #GITHUB_TOKEN: ${{ secrets.SECRET_PAT }}
-  GITHUB_TOKEN: ${{ secrets.TEMP_APP_SECRET }}
+  #GITHUB_TOKEN: ${{ secrets.TEMP_APP_SECRET }}
+  GITHUB_TOKEN: ${{ secrets.APP_NOEXPIRATION_TOKEN }}
   TOKEN: ${{ inputs.token }}
   PROXY_INFRA_FOLDER: 'terraform_templates'
   REPOSITORY: ${{ inputs.repository }}
